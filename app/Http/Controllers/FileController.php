@@ -71,7 +71,8 @@ class FileController extends Controller
         $uploaded_file = $request->file('file');
         $original_ext = $uploaded_file->getClientOriginalExtension();
 
-        $type = $file->getType($original_ext);
+        $type = $file->getType($original_ext) ?: "image";
+
 
         if (!empty($file->upload($type, $uploaded_file, $request['name'], $original_ext))) {
             return $file::create([

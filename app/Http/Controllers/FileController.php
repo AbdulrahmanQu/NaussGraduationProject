@@ -57,7 +57,7 @@ class FileController extends Controller
     /**
      * Upload new file and store it
      * @param  Request $request Request with form data: filename and file info
-     * @return boolean          True if success, otherwise - false
+     * @return \Illuminate\Http\JsonResponse          True if success, otherwise - false
      */
     public function store(Request $request)
     {
@@ -72,13 +72,15 @@ class FileController extends Controller
         $original_ext = $uploaded_file->getClientOriginalExtension();
         $type = $file->getType($original_ext);
 
-        if ($file->upload($type, $uploaded_file, $request['name'], $original_ext)) {
+        if (!empty($file->upload($type, $uploaded_file, $request['name'], $original_ext))) {
             return $file::create([
                     'name' => $request['name'],
-                    'type' => $type->nullable()->change(),
+                    'type' => $type,
                     'extension' => $original_ext,
                     'user_id' => Auth::id()
                 ]);
+        }else{
+            echo "error";
         }
 
         return response()->json(false);

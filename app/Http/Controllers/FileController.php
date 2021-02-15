@@ -88,7 +88,7 @@ class FileController extends Controller
      * Edit specific file
      * @param  integer  $id      File Id
      * @param  Request $request  Request with form data: filename
-     * @return boolean           True if success, otherwise - false
+     * @return \Illuminate\Http\JsonResponse           True if success, otherwise - false
      */
     public function edit($id, Request $request)
     {
@@ -119,7 +119,7 @@ class FileController extends Controller
     /**
      * Delete file from disk and database
      * @param  integer $id  File Id
-     * @return boolean      True if success, otherwise - false
+     * @return \Illuminate\Http\JsonResponse      True if success, otherwise - false
      */
     public function destroy($id)
     {

@@ -20,11 +20,11 @@ class FileController extends Controller
 
     /**
      * Fetch files by Type or Id
-     * @param  string $type  File type
-     * @param  integer $id   File Id
+     * @param string $type File type
+     * @param integer $id File Id
      * @return object        Files list, JSON
      */
-    public function index($type, $id = null)
+    public function index(string $type, $id = null)
     {
         $model = new File();
 
@@ -70,6 +70,7 @@ class FileController extends Controller
 
         $uploaded_file = $request->file('file');
         $original_ext = $uploaded_file->getClientOriginalExtension();
+
         $type = $file->getType($original_ext);
 
         if (!empty($file->upload($type, $uploaded_file, $request['name'], $original_ext))) {

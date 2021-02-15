@@ -75,7 +75,7 @@ class FileController extends Controller
         if ($file->upload($type, $uploaded_file, $request['name'], $original_ext)) {
             return $file::create([
                     'name' => $request['name'],
-                    'type' => $type,
+                    'type' => $type->nullable()->change(),
                     'extension' => $original_ext,
                     'user_id' => Auth::id()
                 ]);

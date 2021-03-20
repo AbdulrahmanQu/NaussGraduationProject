@@ -41,7 +41,8 @@
             background-repeat: no-repeat;
         }
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZzxXd5SgqMddUdrhdqaIW2Zw0CJLsHWY&callback=initialize"></script>
+{{--    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZzxXd5SgqMddUdrhdqaIW2Zw0CJLsHWY&callback=initialize"></script>--}}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjeVMO5aprtP0N7ny9NOVfR5t_RKnkhlI&callback=initialize"></script>
 </head>
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">

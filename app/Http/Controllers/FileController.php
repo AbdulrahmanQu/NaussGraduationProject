@@ -61,31 +61,27 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|unique:files',
-            'file' => 'required|file|mimes:' . File::getAllExtensions() . '|max:' . File::getMaxSize()
-        ]);
-
-        $file = new File();
-
-        $uploaded_file = $request->file('file');
-        $original_ext = $uploaded_file->getClientOriginalExtension();
-
-        $type = $file->getType($original_ext) ?: "image";
-
-
-        if (!empty($file->upload($type, $uploaded_file, $request['name'], $original_ext))) {
-            return $file::create([
-                    'name' => $request['name'],
-                    'type' => $type,
-                    'extension' => $original_ext,
-                    'user_id' => Auth::id()
-                ]);
-        }else{
-            echo "error";
+        if($request->hasFile('files')){
+            $files = $request->file('files');
+            foreach ($files as $key => $item) {
+                $file = new File();
+                $filename = $item->getClientOriginalName();
+                $original_ext = $item->getClientOriginalExtension();
+                $type = $file->getType($original_ext);
+                if (!empty($file->upload($type, $item, $request['filenames'][$key], $original_ext))) {
+                    $file::create([
+                        'name' => $request['filenames'][$key],
+                        'type' => $type,
+                        'extension' => $original_ext,
+                        'user_id' => Auth::id()
+                    ]);
+                }else{
+                    echo "error";
+                }
+            }
         }
 
-        return response()->json(false);
+        return response()->json(true);
     }
 
     /**

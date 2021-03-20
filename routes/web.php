@@ -12,14 +12,11 @@
 */
 
 Route::get('/', 'MainController@index')->name('home')->middleware('auth');
-Route::get('/filedata', 'MainController@modelview')->name('filedata')->middleware('auth');
+Route::get('/filedata/{id}', 'MainController@modelview')->name('filedata')->middleware('auth');
 Route::get('/files/{type}/{id?}', 'FileController@index');
 
 //didn't work
 //Route::get('/modal', 'MainController@modelview')->name('modal')->middleware('auth');
-
-
-
 
 Route::post('files/add', 'FileController@store');
 Route::post('files/edit/{id}', 'FileController@edit');

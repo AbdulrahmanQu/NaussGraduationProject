@@ -7,10 +7,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 {{--    https://www.codexworld.com/adding-google-map-on-website-within-5-minutes/ refrense --}}
     <style>
-        /*.mapContainer{*/
-        /*    width:50%;*/
-        /*    position: relative;*/
-        /*}*/
+        .mapContainer{
+           /* width:50%; */
+           position: relative;
+        }
         #map
         {
             width: 600px;
@@ -18,8 +18,8 @@
         }
         .mapContainer a.direction-link {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 1px;
+            right: 0px;
             z-index: 100010;
             color: #FFF;
             text-decoration: none;
@@ -28,7 +28,7 @@
             line-height: 25px;
             padding: 8px 20px 8px 50px;
             background: #0094de;
-            background-image: url('direction-icon.png');
+            background-image: url(direction-icon.png);
             background-position: left center;
             background-repeat: no-repeat;
         }
@@ -41,7 +41,7 @@
             background-repeat: no-repeat;
         }
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?key=Your_API_KEY"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZzxXd5SgqMddUdrhdqaIW2Zw0CJLsHWY&callback=initialize"></script>
 </head>
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
@@ -66,7 +66,7 @@
 </head>
 <body>
 <script>
-    var myCenter = new google.maps.LatLng(37.422230, -122.084058);
+    var myCenter = new google.maps.LatLng({{$file->address_latitude}}, {{$file->address_longitude}});
 
     function initialize(){
         var mapProp = {
@@ -132,10 +132,10 @@
     <table class="table">
         <thead>
         <tr>
-            <th><img src="{{ asset('images/test.jpeg') }}"></th>
+            <th><img class='file-img' src="{{ asset('storage/' . Auth::user()->name . '_' . Auth::id()) . '/' . $file->type . '/' . $file->name . '.' . $file->extension }}"></th>
             <th>
                 <div class="mapContainer">
-                    <a class="direction-link" target="_blank" href="//maps.google.com/maps?f=d&amp;daddr=37.422230,-122.084058&amp;hl=en">Get Directions</a>
+                    <a class="direction-link" target="_blank" href="//maps.google.com/maps?f=d&amp;daddr={{$file->address_latitude}},{{$file->address_longitude}}&amp;hl=en">Get Directions</a>
                     <div id="map"></div>
                 </div>
             </th>
@@ -143,20 +143,20 @@
         </thead>
         <tbody>
         <tr>
-            <td>File type</td>
-            <td>Image</td>
+            <td>File Name</td>
+            <td>{{$file->name}}</td>
         </tr>
         <tr>
-            <td>Hash type</td>
-            <td>MD5</td>
+            <td>File Type</td>
+            <td>{{$file->type}}</td>
         </tr>
         <tr>
-            <td>Hash value</td>
-            <td>jidioy778675654</td>
+            <td>File Extension</td>
+            <td>{{$file->extension}}</td>
         </tr>
         <tr>
-            <td>virus total</td>
-            <td>link</td>
+            <td>File Created</td>
+            <td>{{$file->created_at}}</td>
         </tr>
         </tbody>
     </table>

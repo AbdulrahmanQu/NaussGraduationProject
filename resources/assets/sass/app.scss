@@ -47,7 +47,7 @@ a {
     transform: scale(1.05);
 }
 
-.delete-file {
+.delete-file{
     float: right;
     z-index: 1;
     margin: 5px 5px 0 0;
@@ -154,4 +154,9 @@ a {
 
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
+}
+
+table .file-img {
+    width: 640px;
+    height: 426px;
 }

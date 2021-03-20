@@ -21,6 +21,7 @@ if (token) {
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import MyFormData from "./MyFormData";
 
 const app = new Vue({
     el: '#app',
@@ -36,6 +37,8 @@ const app = new Vue({
     data: {
         files: {},
         file: {},
+        
+        form: new MyFormData({filenames:[], files: []}),
 
         pagination: {},
         offset: 5,
@@ -81,10 +84,8 @@ const app = new Vue({
             axios.get('files/' + type + '?page=' + page).then(result => {
                 this.loading = false;
                 this.files = result.data.data.data;
-                console.log(this.files);
                 this.pagination = result.data.pagination;
             }).catch(error => {
-                console.log(error);
                 this.loading = false;
             });
 
@@ -102,25 +103,53 @@ const app = new Vue({
         },
 
         submitForm() {
-            this.formData = new FormData();
-            this.formData.append('name', this.fileName);
-            this.formData.append('file', this.attachment);
+            // this.formData = new FormData();
+            // this.formData.append('name', this.fileName);
+            // this.formData.append('file', this.attachment);
 
-            axios.post('files/add', this.formData, {headers: {'Content-Type': 'multipart/form-data'}})
-                .then(response => {
-                    this.resetForm();
-                    this.showNotification('File successfully upload!', true);
-                    this.fetchFile(this.activeTab);
-                })
-                .catch(error => {
+            // axios.post('files/add', this.formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            //     .then(response => {
+            //         this.resetForm();
+            //         this.showNotification('File successfully upload!', true);
+            //         this.fetchFile(this.activeTab);
+            //     })
+            //     .catch(error => {
+            //         this.errors = error.response.data.errors;
+            //         this.showNotification(error.response.data.message, false);
+            //         this.fetchFile(this.activeTab);
+            //     });
+
+            this.form.post('files/add')
+                .catch(errors => {
                     this.errors = error.response.data.errors;
                     this.showNotification(error.response.data.message, false);
                     this.fetchFile(this.activeTab);
+                    this.showNotification('Image location is not found!', true);
+                })
+                .then((response) => {
+                    this.resetForm();
+                    this.showNotification('File successfully upload!', true);
+                    this.fetchFile(this.activeTab);
+                    this.form.files = [];
+                    this.form.filenames = [];
                 });
         },
-
-        addFile() {
-            this.attachment = this.$refs.file.files[0];
+        // addFile() {
+        //     this.attachment = this.$refs.file.files[0];
+        // },
+        addFile(event) {
+            this.form.files = [];
+            this.form.filenames = [];
+            for (let file of event.target.files) {
+                try {
+                    let reader = new FileReader();
+                    reader.readAsDataURL(file); // Not sure if this will work in this context.
+                    this.form.files.push(file);
+                    this.form.filenames.push(file.name);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
         },
 
         prepareToDelete(file) {
@@ -131,6 +160,11 @@ const app = new Vue({
         cancelDeleting() {
             this.deletingFile = {};
             this.showConfirm = false;
+        },
+
+        setFiledata(filedata) {
+            this.file = filedata;
+            console.log(this.file);
         },
 
         deleteFile() {

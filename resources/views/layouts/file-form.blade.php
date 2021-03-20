@@ -2,12 +2,13 @@
     <div class="new-file">
         <form id="new-file-form" action="#" method="#" @submit.prevent="submitForm">
             <div class="field is-grouped">
-                <p class="control is-expanded">
-                    <input class="input" type="text" name="name" placeholder="File name" v-model="fileName" required>
-                </p>
                 <div class="file is-info has-name">
                     <label class="file-label">
-                        <input class="file-input" type="file" ref="file" name="file" @change="addFile()">
+                        <input class="file-input" 
+                            type="file" 
+                            name="files" 
+                            @change="addFile($event)"
+                            multiple>
                         <span class="file-cta">
                             <span class="file-icon">
                                 <i class="fa fa-upload"></i>
@@ -16,13 +17,23 @@
                                 Upload new file
                             </span>
                         </span>
-                        <span class="file-name" v-if="attachment.name" v-html="attachment.name"></span>
+                        <!-- <span class="file-name" v-if="attachment.name" v-html="attachment.name"></span> -->
+                        <!-- <span class="file-name" v-if="form.files.length" v-for="(item, index) in form.files" :key="index" v-html="item.name"></span> -->
                     </label>
                 </div>
                 <p class="control">
                     <button type="submit" class="button is-primary">
                         Add new file
                     </button>
+                </p>
+                <p class="control is-expanded">
+                    <input class="input" 
+                        type="text" 
+                        placeholder="File name" 
+                        v-for="(item, index) in form.filenames" 
+                        :key="index" 
+                        v-model="form.filenames[index]" 
+                        required>
                 </p>
             </div>
         </form>

@@ -41,7 +41,6 @@
             background-repeat: no-repeat;
         }
     </style>
-{{--    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZzxXd5SgqMddUdrhdqaIW2Zw0CJLsHWY&callback=initialize"></script>--}}
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjeVMO5aprtP0N7ny9NOVfR5t_RKnkhlI&callback=initialize"></script>
 </head>
 <!DOCTYPE html>
@@ -67,7 +66,7 @@
 </head>
 <body>
 <script>
-    var myCenter = new google.maps.LatLng({{$file->address_latitude}}, {{$file->address_longitude}});
+    var myCenter = new google.maps.LatLng({{$file['address_latitude']}}, {{$file->address_longitude}});
 
     function initialize(){
         var mapProp = {

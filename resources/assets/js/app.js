@@ -122,7 +122,7 @@ const app = new Vue({
             this.form.post('files/add')
                 .catch(errors => {
                     this.errors = error.response.data.errors;
-                    this.showNotification(error.response.data.message, false);
+                    this.showNotification(error.response.data.message, true);
                     this.fetchFile(this.activeTab);
                     this.showNotification('Image location is not found!', true);
                 })

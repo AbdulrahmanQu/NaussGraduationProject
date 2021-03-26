@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -24,6 +25,18 @@ class FileController extends Controller
      * @param integer $id File Id
      * @return object        Files list, JSON
      */
+
+    protected function formatValidationErrors(Request $request)
+    {
+        $this->validate($request, [
+            'latitude' => 'required',
+            'longitude' => 'required'
+
+        ]);
+        return $request->errors()->all();
+    }
+
+
     public function index(string $type, $id = null)
     {
         $model = new File();
@@ -57,22 +70,59 @@ class FileController extends Controller
     /**
      * Upload new file and store it
      * @param  Request $request Request with form data: filename and file info
-     * @return \Illuminate\Http\JsonResponse          True if success, otherwise - false
+     * @return \Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
+
+
     public function store(Request $request)
     {
+
+//        $this->validate($request, [
+//            'latitude' => 'required',
+//            'longitude' => 'required'
+//        ]);
+
+
+//        $validator = Validator::make($request->all(), [
+//            'latitude' => 'required',
+//            'longitude' => 'required'
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return redirect('/filedata/{id}')
+//                ->withErrors($validator)
+//                ->withInput();
+//        }
+
+
+
+
         if($request->hasFile('files')){
             $files = $request->file('files');
             foreach ($files as $key => $item) {
                 $file = new File();
-                
-                if($item->getClientOriginalExtension() != null){
+//                $validator = Validator::make($request->all(), [
+//                    'latitude' => 'required',
+//                    'longitude' => 'required'
+//                ]);
+
+//                if ($validator->fails()) {
+//                    return redirect('/filedata/{id}')
+//                        ->withErrors($validator)
+//                        ->withInput();
+//                }
+                if($item->getClientOriginalExtension() == 'jpeg'){
                     $imgLocation = self::get_image_location($item);
                     $imgLat = $imgLocation['latitude'];
                     $imgLng = $imgLocation['longitude'];
+//                    if($item->getClientOriginalExtension() != null){
+//                        $imgLocation = self::get_image_location($item);
+//                        $imgLat = $imgLocation['latitude'];
+//                        $imgLng = $imgLocation['longitude'];
                 }else{
                     $imgLat = null;
                     $imgLng = null;
+//                    echo "<script>alert('theres no coordinates')</script>";
                 }
 
 //                $imgLocation = self::get_image_location($item);
@@ -84,9 +134,11 @@ class FileController extends Controller
                 $filename = $item->getClientOriginalName();
                 $original_ext = $item->getClientOriginalExtension();
                 $type = $file->getType($original_ext);
-                if ($imgLat == null || $imgLng == null)
+                if ($imgLat == null && $imgLng == null)
                 {
-                    echo "error";
+//                    echo "error";
+                    echo "<script>alert('theres no coordinates')</script>";
+
                 }
                 if (!empty($file->upload($type, $item, $request['filenames'][$key], $original_ext))) {
                     $file::create([
@@ -102,7 +154,6 @@ class FileController extends Controller
                 }
             }
         }
-
         return response()->json(true);
     }
 
@@ -167,7 +218,7 @@ class FileController extends Controller
 
     public function get_image_location($image = ''){
 
-        $exif = exif_read_data($image, 0, true);
+        $exif = @exif_read_data($image, 0, true);
 
         if($exif && isset($exif['GPS'])){
             $GPSLatitudeRef = $exif['GPS']['GPSLatitudeRef'];

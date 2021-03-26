@@ -10,24 +10,24 @@
                         <span>Pictures</span>
                     </a>
                 </li>
-                <li :class="{'is-active': isActive('audio')}" @click="getFiles('audio')">
-                   <a>
-                        <span class="icon is-small"><i class="fa fa-music"></i></span>
-                        <span>Music</span>
-                    </a>
-                </li>
-                <li :class="{'is-active': isActive('video')}" @click="getFiles('video')">
-                    <a>
-                        <span class="icon is-small"><i class="fa fa-film"></i></span>
-                        <span>Videos</span>
-                    </a>
-                </li>
-                <li :class="{'is-active': isActive('document')}" @click="getFiles('document')">
-                    <a>
-                        <span class="icon is-small"><i class="fa fa-file-text-o"></i></span>
-                        <span>Documents</span>
-                    </a>
-                </li>
+{{--                <li :class="{'is-active': isActive('audio')}" @click="getFiles('audio')">--}}
+{{--                   <a>--}}
+{{--                        <span class="icon is-small"><i class="fa fa-music"></i></span>--}}
+{{--                        <span>Music</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--                <li :class="{'is-active': isActive('video')}" @click="getFiles('video')">--}}
+{{--                    <a>--}}
+{{--                        <span class="icon is-small"><i class="fa fa-film"></i></span>--}}
+{{--                        <span>Videos</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--                <li :class="{'is-active': isActive('document')}" @click="getFiles('document')">--}}
+{{--                    <a>--}}
+{{--                        <span class="icon is-small"><i class="fa fa-file-text-o"></i></span>--}}
+{{--                        <span>Documents</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
             </ul>
         </div>
 

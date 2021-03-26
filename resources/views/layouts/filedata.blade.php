@@ -41,7 +41,7 @@
             background-repeat: no-repeat;
         }
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjeVMO5aprtP0N7ny9NOVfR5t_RKnkhlI&callback=initialize"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjeVMO5aprtP0N7ny9NOVfR5t_RKnkhlI"></script>
 </head>
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
@@ -66,7 +66,7 @@
 </head>
 <body>
 <script>
-    var myCenter = new google.maps.LatLng({{$file['address_latitude']}}, {{$file->address_longitude}});
+    var myCenter = new google.maps.LatLng({{$file['address_latitude']}}, {{$file['address_longitude']}});
 
     function initialize(){
         var mapProp = {
@@ -117,7 +117,6 @@
                                                  document.getElementById('logout-form').submit();">
                                 Logout
                             </a>
-
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 {{ csrf_field() }}
                             </form>
@@ -132,31 +131,35 @@
     <table class="table">
         <thead>
         <tr>
-            <th><img class='file-img' src="{{ asset('storage/' . Auth::user()->name . '_' . Auth::id()) . '/' . $file->type . '/' . $file->name . '.' . $file->extension }}"></th>
+            <th><img class='file-img' src="{{ asset('storage/' . Auth::user()->name . '_' . Auth::id()) . '/' . $file['type'] . '/' . $file['name'] . '.' . $file['extension'] }}"></th>
             <th>
+                @if($file['address_latitude'] != null)
                 <div class="mapContainer">
-                    <a class="direction-link" target="_blank" href="//maps.google.com/maps?f=d&amp;daddr={{$file->address_latitude}},{{$file->address_longitude}}&amp;hl=en">Get Directions</a>
+                    <a class="direction-link" target="_blank" href="//maps.google.com/maps?f=d&amp;daddr={{$file['address_latitude']}},{{$file['address_longitude']}}&amp;hl=en">Get Directions</a>
                     <div id="map"></div>
                 </div>
+                    @else
+                    there's no Coordinates
+                    @endif
             </th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>File Name</td>
-            <td>{{$file->name}}</td>
+            <td>{{$file['name']}}</td>
         </tr>
         <tr>
             <td>File Type</td>
-            <td>{{$file->type}}</td>
+            <td>{{$file['type']}}</td>
         </tr>
         <tr>
             <td>File Extension</td>
-            <td>{{$file->extension}}</td>
+            <td>{{$file['extension']}}</td>
         </tr>
         <tr>
             <td>File Created</td>
-            <td>{{$file->created_at}}</td>
+            <td>{{$file['created_at']}}</td>
         </tr>
         </tbody>
     </table>

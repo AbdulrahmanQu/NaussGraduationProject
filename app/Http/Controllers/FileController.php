@@ -111,7 +111,7 @@ class FileController extends Controller
 //                        ->withErrors($validator)
 //                        ->withInput();
 //                }
-                if($item->getClientOriginalExtension() == 'jpeg'){
+                if($item->getClientOriginalExtension() != null){
                     $imgLocation = self::get_image_location($item);
                     $imgLat = $imgLocation['latitude'];
                     $imgLng = $imgLocation['longitude'];
